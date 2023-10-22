@@ -28,7 +28,6 @@ interface IImage {
 
 interface IAnouncementContext {
   anouncement: IAnouncement | null;
-  titleModalAnouncement: string;
   isModalCreateOpen: boolean;
   openModalCreate: () => void;
   closeModalCreate: () => void;
@@ -40,17 +39,14 @@ export const AnouncementProvider = ({
   children,
 }: IAnouncementProviderProps) => {
   const [anouncement, setAnouncement] = useState<IAnouncement | null>(null);
-  const [titleModalAnouncement, setTitleModalAnouncement] = useState("");
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const closeModalCreate = () => {
-    setTitleModalAnouncement("");
     setIsModalCreateOpen(false);
   };
   const openModalCreate = () => {
-    setTitleModalAnouncement("Criar anúncio");
     setIsModalCreateOpen(true);
   };
 
@@ -72,7 +68,6 @@ export const AnouncementProvider = ({
         closeModalCreate,
         openModalCreate,
         isModalCreateOpen,
-        titleModalAnouncement,
       }}
     >
       {children}

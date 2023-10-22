@@ -7,8 +7,7 @@ import trash from "../../assets/trash.svg";
 import { AnouncementContext } from "../../providers/AnouncementContext";
 
 export const Modal_create_anouncement = (title: any) => {
-  const { closeModalCreate, titleModalAnouncement } =
-    useContext(AnouncementContext);
+  const { closeModalCreate } = useContext(AnouncementContext);
   const {
     register,
     handleSubmit,
@@ -55,7 +54,7 @@ export const Modal_create_anouncement = (title: any) => {
       <div className="modal w-[32.5rem] h-[84.625rem] bg-whiteFixed rounded-lg py-4 px-6 mt-[5rem] mb-[5rem]">
         <div className="modal-header flex justify-between mb-[1.0625rem]">
           <h2 className="font-lexend text-grey1 text-base font-medium">
-            {titleModalAnouncement}
+            Criar anúncio
           </h2>
           <button
             type="button"

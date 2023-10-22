@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import avatar from "../../assets/avatar.png";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../providers/UserContext";
 
 export const Header_profile = () => {
