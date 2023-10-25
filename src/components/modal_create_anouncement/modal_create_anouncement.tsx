@@ -5,16 +5,22 @@ import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import trash from "../../assets/trash.svg";
 import { AnouncementContext } from "../../providers/AnouncementContext";
+import { useFieldArray } from "react-hook-form";
 
-export const Modal_create_anouncement = (title: any) => {
-  const { closeModalCreate } = useContext(AnouncementContext);
+export const Modal_create_anouncement = () => {
+  const { closeModalCreate, createAnouncement } =
+    useContext(AnouncementContext);
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(anouncementFormSchema),
   });
+
+  const { fields, append, remove } = useFieldArray({ control, name: "images" });
 
   const submit = (formData: any) => {
     const year = parseFloat(formData.year);
@@ -29,12 +35,31 @@ export const Modal_create_anouncement = (title: any) => {
     const price = parseFloat(formData.price);
     formData.price = price;
 
-    const formDataToSend = {
-      ...formData,
-      images: additionalImages.map((_, index) => formData.images[index]),
-    };
+    // const formDataToSend = {
+    //     ...formData,
+    //     images: additionalImages.map((_, index) => formData.images[index]),
+    // };
 
-    console.log(formDataToSend);
+    const { images, image_url_1, image_url_2, ...rest } = formData;
+
+    let newImages = [image_url_1, image_url_2];
+
+    const pickImages =
+      images?.map((image) => {
+        return image.image_url!;
+      }) || null;
+
+    if (pickImages) {
+      newImages = [...newImages, ...pickImages];
+    }
+
+    const arrayFinalImages = newImages.map((image) => {
+      return { image_url: image };
+    });
+
+    const formDataFinal = { ...rest, images: arrayFinalImages };
+
+    createAnouncement(formDataFinal);
   };
 
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
@@ -245,22 +270,19 @@ export const Modal_create_anouncement = (title: any) => {
                   {errors.image_url_2.message}
                 </span>
               )}
-              {additionalImages.map((_image, index) => (
+              {fields.map((_image, index) => (
                 <div key={index}>
                   <label className="text-sm text-grey1 font-medium mb-[0.3125rem]">{`${
                     index + 3
                   }° Imagem da galeria`}</label>
                   <input
-                    {...register(`images[${index}].url`)}
+                    {...register(`images[${index}].image_url`)}
                     type="url"
                     placeholder={`https://image.com/${index + 3}`}
                     className="w-[90%] border-[2px] border-grey7 bg-transparent rounded px-4 py-2.5 mb-6 mr-[27px]"
                   />
-                  {index === additionalImages.length - 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeImageField(index)}
-                    >
+                  {index === fields.length - 1 && (
+                    <button type="button" onClick={() => remove(index)}>
                       <img
                         src={trash}
                         className="text-[#4529E6] w-[20px] h-[20px]"
@@ -272,7 +294,7 @@ export const Modal_create_anouncement = (title: any) => {
               <button
                 type="button"
                 className="w-[70%] py-3 px-5 bg-brand4 text-brand1 text-sm font-medium rounded mb-6"
-                onClick={addImageField}
+                onClick={() => append({ image_url: "" })}
               >
                 Adicionar campo para imagem da galeria
               </button>
