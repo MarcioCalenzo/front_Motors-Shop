@@ -3,7 +3,6 @@
 Este é um projeto denominado Motors Shop e trata-se de uma plataforma de e-commerce para a compra e venda de carros.
 Aqui nesta documentação você encontrará as referências da parte frotend do projeto. 
 Para ter acesso ao backend do projeto, entre no link abaixo: 
-- (https://github.com/Kenzie-Academy-Brasil-Developers/project-full_stack-backend-raiannalima).
 
 ## Tecnologias utilizadas: 
 
